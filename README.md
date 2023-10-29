@@ -1,7 +1,9 @@
 # C# "interpreter"/All in one (.csi)
 Simple python script that allows you to stuff a .csproj and a .cs into one .csi, then when the .csi that holds the source code and is executable(kinda..). 
 
-![1](https://github.com/LoganjdM/Csharp-all-in-one-file/assets/138932791/848137f5-a761-4bdf-8299-e1a405fa56b7) ![2](https://github.com/LoganjdM/Csharp-all-in-one-file/assets/138932791/6c11e2a9-9389-4343-9487-afff853d6ced)
+![1](https://github.com/LoganjdM/Csharp-all-in-one-file/assets/138932791/2e8059ef-9658-4920-ad6e-0f03bc7c5727)![2](https://github.com/LoganjdM/Csharp-all-in-one-file/assets/138932791/1087839f-4209-48d3-9b7d-b308511ffd74)
+
+
 
 ### Features
 * Create a .csi file containing the source code and the project file.
