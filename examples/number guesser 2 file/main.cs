@@ -1,34 +1,11 @@
 using System;
 
-namespace NumberGuessGame
+namespace NumGuess2
 {
-    class Program
+    public struct Guess
     {
-        static void Main()
-        {
-            Console.WriteLine("Welcome to number guesser!");
-            while(true)
-            {
-                sissyphusRollingBoulderUpHill();
-            }
-        }
-        static void sissyphusRollingBoulderUpHill()
-        {
-            Console.WriteLine("I'm thinking of a number between 1 and 100...");
-
-            Guess guesser = new Guess(new Random().Next(1, 101));
-            while (!guesser.guessing())
-            {
-                Console.WriteLine("Try again...");
-            }
-
-            Console.WriteLine("Thanks for playing!\n"); //  2 line spacing before restart looks nice  //
-        }
-    }
-    public class Guess
-    {
-        int secretNumber {get;} //  does not change  //
-        uint attempts {get; set;}
+        int secretNumber { get; } //  does not change  //
+        uint attempts { get; set; }
         public Guess(int num)
         {
             this.secretNumber = num;
@@ -50,12 +27,12 @@ namespace NumberGuessGame
             }
             this.attempts++;
 
-            higherOrLower(secretNumber,userGuess);
+            higherOrLower(secretNumber, userGuess);
             return false;
         }
         static void higherOrLower(int secretNumber, int guess)
         {
-            if (guess < secretNumber)
+            if (userGuess < secretNumber)
                 Console.WriteLine("Higher number.");
             else
                 Console.WriteLine("Lower number.");

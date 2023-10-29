@@ -1,0 +1,15 @@
+## you dont this you can already run the included csi ##
+examples/hello world/obj
+examples/number guesser/obj
+examples/number guesser 2 file/obj
+examples/hello world/bin/
+examples/number guesser/bin/
+examples/number guesser 2 file/bin
+
+## fuuck offf why does it keep creating itself I dont need a sln here ##
+*.sln
+## vscode ##
+.vscode/
+
+## prob debug couse this should delete itself ##
+*_NittyGritty/

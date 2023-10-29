@@ -1,14 +1,14 @@
-⇔<Project Sdk="Microsoft.NET.Sdk">
+
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputPath>./</OutputPath>
     <OutputType>Exe</OutputType>
     <TargetFramework>net7.0</TargetFramework>
-  </PropertyGroup>
+  <OutputType>Exe</OutputType><OutputPath>./</OutputPath></PropertyGroup>
 
 </Project>
 ⇔
-⇔using System;
+using System;
 
 class Program
 {
@@ -16,4 +16,5 @@ class Program
     {
         Console.WriteLine("Hello, World!");
     }
-}⇔
+}
+⇔
