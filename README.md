@@ -4,6 +4,7 @@ Simple python script that allows you to stuff a .csproj and a .cs into one .csi,
 ### Features
 * Create a .csi file containing the source code and the project file.
 * Build and execute directly from the csi file.
+![2](https://github.com/LoganjdM/Csharp-all-in-one-file/assets/138932791/6c11e2a9-9389-4343-9487-afff853d6ced)
 
 # Prerequisites
 1. ![Python](https://www.python.org/) (*for the script*)
