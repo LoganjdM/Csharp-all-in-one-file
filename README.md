@@ -24,6 +24,5 @@ An example number guessing game I generated with GPT and a simple hello world ap
 
 # Plans on forward
 Just to improve this thing though I have some noticable plans
-1. Right now you can only include one c# source file, I wish for this to be able to include multiple. should'nt be hard- just lazy
-2. Not have to have the .csi in the same path as the python script.
-3. Maybe file compression of some sort
+1. Not have to have the .csi in the same path as the python script.
+2. Maybe file compression of some sort
