@@ -20,7 +20,7 @@ Simple python script that allows you to stuff a .csproj and a .cs into one .csi,
 4. To package, input the "**m**" command.
 5. To execute, input the "**r**" command.
 ## Example
-An example number guessing game I generated with GPT and a simple hello world application is includedin examples, with project files included.
+2 example number guessing games and a simple hello world application is includedin examples, with project files included.
 
 # Plans on forward
 Just to improve this thing though I have some noticable plans
