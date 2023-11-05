@@ -1,17 +1,43 @@
 import subprocess as subp
-import re
 import os
 import time
+import re
 import shutil
 import threading as thread
 import xml.etree.ElementTree as et
-import io
 
 currDirPath = os.path.dirname(os.path.abspath(__file__))
 constSeperator = '⇔'
 constErrorKey = 'failed'.encode()
 constBuildCmd = 'dotnet build --configuration Release'
 
+class decreaseFileSize:
+    whiteSpace = {
+        '    ' : '\t', #4 spaces = tab
+        '   ' : '\t', #3 spaces = tab
+        '  ' : ' ', #2 spaces = space
+        '\f' : ' ', #form feed = space
+        '\v' : ' ' #vertical tab = space
+    }
+    def __init__(self, file) -> None: 
+        self.write = open(file.csproj, 'w', encoding='utf-8')    
+        self.read = open(file.csproj, 'r', encoding='utf-8')
+    #
+
+    def removeWhiteSpaceChar(self) -> None:
+        cont = self.read.read()
+        for key, value in self.whiteSpace.items():
+            cont = cont.replace(key, value)
+        self.write.write(cont.strip())
+    #    
+    def removeComments(self) -> None:
+        cont = self.read.read()
+        cont = re.sub(r'//.*', '', cont)
+        cont = re.sub(r'/\*.*?\/', '', cont, flags=re.DOTALL)
+        self.write.write(cont.strip())
+    #
+
+#
 class runningCsi:
     def __init__(self, fileName):
         self.fileName = fileName
@@ -65,7 +91,7 @@ class runningCsi:
     def build(self) -> bool:
         try:
             start = time.time()
-            proc:subp = subp.run(constBuildCmd, cwd=self.buildDir, stdout=subp.PIPE, text=False)
+            proc = subp.run(constBuildCmd, cwd=self.buildDir, stdout=subp.PIPE, text=False)
             if constErrorKey in proc.stdout.lower(): 
                 raise Exception(proc.stdout.lower().decode('utf-8'))
             
@@ -80,8 +106,7 @@ class runningCsi:
     def stdOut(exe) -> None:
         while exe.poll() is None:
             out = exe.stdout.read()
-            if out:
-                print(out, end='')
+            print(out, end='')
     #
 
     @staticmethod
@@ -91,20 +116,23 @@ class runningCsi:
                 uInput = input()
                 if uInput.strip() == '#':
                     print('closing...')
-                    exe.stdin.close(), exe.wait()
+                    exe.kill()
                     return
-                exe.stdin.write(uInput), exe.stdin.flush()
+                exe.stdin.write(uInput)
+                exe.stdin.flush()
     #
 
     def runApp(self, exe) -> None:
         print('\033[33m'+'You can close by inputting "#"'+'\033[0m')
         try:
             ## jank but if this isnt on 2 threads in and out block each other ##
-            outThread = threading.Thread(target=runningCsi.stdOut, args=(exe,))
-            inThread = threading.Thread(target=runningCsi.stdIn, args=(exe,))
+            outThread = thread.Thread(target=runningCsi.stdOut, args=(exe,))
+            inThread = thread.Thread(target=runningCsi.stdIn, args=(exe,))
 
-            outThread.start(), inThread.start()
-            outThread.join(), inThread.join()
+            outThread.start()
+            inThread.start()
+            outThread.join()
+            inThread.join()
         except subp.CalledProcessError as e:
             print('\033[31mError occurred while running the csi: \033[0m', e)
 
@@ -121,10 +149,10 @@ class runningCsi:
             if targetFramework is None:
                 raise Exception('TargetFramework not found in .csproj file!')
 
-            return targetFramework.text
+            return targetFramework.text # type: ignore
         except Exception as e:
             print('\033[31mError finding the .net version!: ', e,'\033[0m')
-            return None 
+            return "" 
     #
     
     def executeApp(self) -> None:
@@ -147,7 +175,7 @@ class runningCsi:
 #
 
 class makingCsi:
-    def __init__(self, csproj:str, csFiles:str):
+    def __init__(self, csproj:str, csFiles:list[str]):
         self.csproj = os.path.join(currDirPath, csproj+".csproj")
         self.cs = [os.path.join(currDirPath, cs + ".cs") for cs in csFiles]
         self.csi = open(os.path.join(currDirPath, csproj+'.csi'), 'a', encoding='utf-8')
@@ -160,7 +188,7 @@ class makingCsi:
         if tagPath is None:
             ##  add tag  ##
             try:
-                propGroup = root.find('.//PropertyGroup')
+                propGroup:et.Element = root.find('.//PropertyGroup') # type: ignore
                 if propGroup is None:
                     ## shit ##
                     root.append(et.Element('PropertyGroup'))
@@ -224,6 +252,10 @@ def make() -> None:
     csi.packFile(csi.csproj, True)
     for cs in csi.cs:
         csi.packFile(cs, False)
+
+    csiStep2 = decreaseFileSize(csi)
+    csiStep2.removeComments()
+    csiStep2.removeWhiteSpaceChar()
 #
 
 def cd(relative, path) -> str:
